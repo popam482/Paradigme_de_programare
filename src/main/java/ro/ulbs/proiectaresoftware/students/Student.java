@@ -1,18 +1,22 @@
 package ro.ulbs.proiectaresoftware.students;
 
-public class Student {
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Objects;
 
-    private int nrMatricol;
+public class Student implements Comparable<Student> {
+
+    private String nrMatricol;
     private String prenume, nume, formatieDeStudiu;
 
-    public Student(int nrMatricol, String prenume, String nume, String formatieDeStudiu) {
+    public Student(String nrMatricol, String prenume, String nume, String formatieDeStudiu) {
         this.nrMatricol = nrMatricol;
         this.prenume = prenume;
         this.nume = nume;
         this.formatieDeStudiu = formatieDeStudiu;
     }
 
-    public int getNrMatricol() {
+    public String getNrMatricol() {
         return nrMatricol;
     }
 
@@ -28,7 +32,7 @@ public class Student {
         return formatieDeStudiu;
     }
 
-    public void setNrMatricol(int nrMatricol) {
+    public void setNrMatricol(String nrMatricol) {
         this.nrMatricol = nrMatricol;
     }
 
@@ -47,7 +51,36 @@ public class Student {
     @Override
     public String toString() {
 
-        return String.format("%05d %10s %10s %10s", nrMatricol, prenume, nume, formatieDeStudiu);
+        return String.format("%5s %10s %10s %10s", nrMatricol, prenume, nume, formatieDeStudiu);
 
     }
+
+    @Override
+    public int compareTo(Student s) {
+        if (this.formatieDeStudiu.equals(s.formatieDeStudiu)) {
+            if (this.nume.equals(s.nume)) {
+                return this.prenume.compareTo(s.prenume);
+            }
+            return this.nume.compareTo(s.nume);
+        }
+        return this.formatieDeStudiu.compareTo(s.formatieDeStudiu);
+    }
+
+    @Override
+    public boolean equals(Object o){
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Student student = (Student) o;
+
+        return Objects.equals(nume, student.nume) &&
+                Objects.equals(prenume, student.prenume) &&
+                Objects.equals(formatieDeStudiu, student.formatieDeStudiu);
+    }
+
+    @Override
+    public int hashCode(){
+        return Objects.hash(nume, prenume, formatieDeStudiu);
+    }
+
 }
