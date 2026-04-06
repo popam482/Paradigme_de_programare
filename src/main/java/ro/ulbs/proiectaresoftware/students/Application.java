@@ -1,6 +1,7 @@
 package ro.ulbs.proiectaresoftware.students;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.*;
 import java.util.Scanner;
@@ -88,5 +89,39 @@ public class Application {
         for(int i = 0; i< studenti.size(); i++){
              System.out.println(studenti.get(i));
          }
+    }
+
+    public static Map<String, Integer> citireNote(String numeFisier){
+        String numarMatricol, nota;
+        Map<String, Integer> note= new HashMap<>();
+        FileInputStream fisier;
+        Scanner sc=new Scanner(System.in);
+        try{
+            fisier=new FileInputStream(numeFisier);
+        }catch(FileNotFoundException e){
+            e.printStackTrace();
+        }
+
+        while(sc.hasNext()){
+            String linie=sc.nextLine();
+            String comp[]=linie.split(",");
+            numarMatricol=comp[0];
+            nota=comp[1];
+            note.put(numarMatricol, Integer.parseInt(nota));
+        }
+        sc.close();
+        return note;
+    }
+
+    public static Integer getNota(Student st, Map<String, Integer> note){
+        return(note.get(st.getNrMatricol()));
+    }
+
+    public static Map<Student, Integer> mapareNote(Map<String, Integer> note, List<Student> listaStudenti){
+        Map<Student, Integer> mapareStudenti = new HashMap<>();
+        for(Student s:listaStudenti){
+            mapareStudenti.put(s,note.get(s.getNrMatricol()));
+        }
+        return mapareStudenti;
     }
 }
