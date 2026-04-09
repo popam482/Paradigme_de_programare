@@ -53,6 +53,32 @@ public class Application {
         Collections.sort(lista);
         System.out.println("=====SORTARE=====");
         afisare(lista);
+
+        System.out.println("\n===== CITIRE NOTE DIN FISIER =====");
+        Map<String, Integer> noteMap = citireNote("note.csv");
+
+        System.out.println("Note brute: " + noteMap);
+
+        System.out.println("Mapare studenti");
+
+        Map<Student, Integer> noteStudenti = mapareNote(noteMap, lista);
+
+        System.out.println("\n===== REZULTAT MAPARE =====");
+        for (int i = 0; i < lista.size(); i++) {
+            Student s = lista.get(i);
+            Integer nota = noteStudenti.get(s);
+            System.out.println("Student: " + s.getNume() + " " + s.getPrenume() + " - nota: " + nota);
+        }
+
+        if(!lista.isEmpty()) {
+            Student proba = lista.get(0);
+            Integer notaProba = getNota(proba, noteMap);
+            System.out.println("Nota pentru " + proba.getNrMatricol() + " este: " + notaProba);
+        }
+
+
+
+
     }
 
     public static List<Student> citireFisier(String numeFisier){
@@ -95,21 +121,20 @@ public class Application {
         String numarMatricol, nota;
         Map<String, Integer> note= new HashMap<>();
         FileInputStream fisier;
-        Scanner sc=new Scanner(System.in);
         try{
             fisier=new FileInputStream(numeFisier);
+            Scanner sc = new Scanner(fisier);
+            while(sc.hasNext()){
+                String linie=sc.nextLine();
+                String comp[]=linie.split(",");
+                numarMatricol=comp[0];
+                nota=comp[1];
+                note.put(numarMatricol, Integer.parseInt(nota));
+            }
+            sc.close();
         }catch(FileNotFoundException e){
             e.printStackTrace();
         }
-
-        while(sc.hasNext()){
-            String linie=sc.nextLine();
-            String comp[]=linie.split(",");
-            numarMatricol=comp[0];
-            nota=comp[1];
-            note.put(numarMatricol, Integer.parseInt(nota));
-        }
-        sc.close();
         return note;
     }
 
