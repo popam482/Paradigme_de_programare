@@ -3,12 +3,13 @@ package ro.ulbs.proiectaresoftware.students;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.*;
 import java.util.Scanner;
 
 public class Application {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Student s1 = new Student("3112", "Ioan", "Popa", "TI21/2");
         Student s2= new Student("3123", "Maria", "Oprea", "TI21/1");
         Student s3= new Student("1245", "Alis", "Popa", "TI21/1");
@@ -76,7 +77,11 @@ public class Application {
             System.out.println("Nota pentru " + proba.getNrMatricol() + " este: " + notaProba);
         }
 
-
+        System.out.println("\n===== SCRIERE IN FISIER =====\n");
+        ExportConfig config = new ExportConfig("Lista1.csv", "Lista 1");
+        ExportStudents exportaStudenti = new ExportStudents(config, lista);
+        exportaStudenti.export();
+        System.out.println("Scris cu succes");
 
 
     }
