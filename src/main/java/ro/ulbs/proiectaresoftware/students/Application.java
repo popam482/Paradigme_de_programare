@@ -50,7 +50,7 @@ public class Application {
         List<Student> lista=citireFisier(numeFisier);
         afisare(lista);
 
-        Collections.sort(lista);
+        sortare(lista);
         System.out.println("=====SORTARE=====");
         afisare(lista);
 
@@ -81,6 +81,10 @@ public class Application {
 
     }
 
+    static void sortare(List<Student> lista) {
+        Collections.sort(lista);
+    }
+
     public static List<Student> citireFisier(String numeFisier){
         List<Student> lista=new ArrayList<>();
         File fisier = new File(numeFisier);
@@ -107,7 +111,7 @@ public class Application {
         return studenti.contains(student);
     }
 
-    private static boolean prezent(Student student, List<Student> studenti){
+    public static boolean prezent(Student student, List<Student> studenti){
         return studenti.contains(student);
     }
 

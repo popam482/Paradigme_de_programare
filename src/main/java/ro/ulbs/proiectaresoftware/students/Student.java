@@ -6,8 +6,10 @@ import java.util.Objects;
 
 public class Student implements Comparable<Student> {
 
-    private String nrMatricol;
-    private String prenume, nume, formatieDeStudiu;
+    private final String nrMatricol;
+    private final String prenume;
+    private final String nume;
+    private final String formatieDeStudiu;
 
     public Student(String nrMatricol, String prenume, String nume, String formatieDeStudiu) {
         this.nrMatricol = nrMatricol;
@@ -30,22 +32,6 @@ public class Student implements Comparable<Student> {
 
     public String getFormatieDeStudiu() {
         return formatieDeStudiu;
-    }
-
-    public void setNrMatricol(String nrMatricol) {
-        this.nrMatricol = nrMatricol;
-    }
-
-    public void setPrenume(String prenume) {
-        this.prenume = prenume;
-    }
-
-    public void setNume(String nume) {
-        this.nume = nume;
-    }
-
-    public void setFormatieDeStudiu(String formatieDeStudiu) {
-        this.formatieDeStudiu = formatieDeStudiu;
     }
 
     @Override
