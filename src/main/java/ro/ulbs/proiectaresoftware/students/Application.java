@@ -80,10 +80,62 @@ public class Application {
         System.out.println("\n===== SCRIERE IN FISIER =====\n");
         ExportConfig config = new ExportConfig("Lista1.csv", "Lista 1");
         ExportStudents exportaStudenti = new ExportStudents(config, lista);
-        exportaStudenti.export();
+        exportaStudenti.exportFisier();
         System.out.println("Scris cu succes");
 
+        System.out.println("\n======SCRIERE IN EXCEL =====\n");
+        ExportConfig config2 = new ExportConfig("Lista1.csv", "Lista 1");
+        ExportStudents exportaStudenti2 = new ExportStudents(config2, lista);
+        exportaStudenti2.exportExcel(studenti, "exportaExcel.xlsx");
+        System.out.println("Scris cu succces");
 
+        System.out.println("====Strategy patterns cu xlsx - export====");
+        export(lista, getExporter("testxlsx.xlsx"));
+
+        System.out.println("====Strategy patterns cu csv - export=====");
+        export(lista, getExporter("testcsv.csv"));
+
+        System.out.println("\n====Strategy patterns cu xlsx - import====");
+        export(lista, getExporter("testxlsx.xlsx"));
+
+        afisare(lista);
+
+        System.out.println("\n====Strategy patterns cu csv - import====");
+        export(lista, getExporter("testcsv.csv"));
+
+        afisare(lista);
+
+
+    }
+
+    public static Importer getImporter(String filename) {
+        String fileExtension = filename.substring(filename.lastIndexOf(".")+1);
+        switch (fileExtension) {
+            case "csv":
+                return new ImportCsv(filename);
+                case "xlsx":
+                    return new ImportExcel(filename);
+                    default:
+                        throw new IllegalArgumentException("Format invalid");
+
+        }
+    }
+
+    public static Exporter getExporter(String filename) {
+        String fileExtension = filename.substring(filename.lastIndexOf(".") + 1);
+        switch (fileExtension) {
+            case "csv":
+                return new ExportToCsv(filename);
+            case "xlsx":
+                return new ExportToExcel(filename);
+            default:
+
+                throw new IllegalArgumentException("Unknown file extension: " + fileExtension);
+        }
+    }
+
+    public static void export(List<Student> list, Exporter exporter) throws IOException {
+        exporter.export(list);
     }
 
     static void sortare(List<Student> lista) {

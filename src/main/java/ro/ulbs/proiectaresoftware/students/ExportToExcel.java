@@ -1,40 +1,23 @@
 package ro.ulbs.proiectaresoftware.students;
 
-import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-public class ExportStudents {
-    final ExportConfig config;
-    final List<Student> lista;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.List;
 
-    public ExportStudents(ExportConfig config, List<Student> lista){
-        this.config=config;
-        this.lista=new ArrayList<>(lista);
+public class ExportToExcel implements Exporter {
+
+    private final String filename;
+
+    public ExportToExcel(String filename) {
+        this.filename = filename;
     }
 
-    public void exportFisier() throws IOException {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(config.numeFisier))) {
-
-            bw.write("NrMatricol,Nume,Prenume,FormatieStudiu");
-            bw.newLine();
-
-            for (Student s : lista) {
-                String linie = s.getNrMatricol() + "," +
-                        s.getNume() + "," +
-                        s.getPrenume() + "," +
-                        s.getFormatieDeStudiu();
-                bw.write(linie);
-                bw.newLine();
-            }
-        }
-    }
-
-    public void exportExcel(List<Student> studenti, String numeFisier) throws IOException {
+    @Override
+    public void export(List<Student> studenti) throws IOException {
         try (XSSFWorkbook workbook = new XSSFWorkbook()) {
             XSSFSheet sheet = workbook.createSheet("Detalii studenti");
 
@@ -54,13 +37,13 @@ public class ExportStudents {
                 row.createCell(2).setCellValue(s.getPrenume());
                 row.createCell(3).setCellValue(s.getFormatieDeStudiu());
             }
-            try (FileOutputStream out = new FileOutputStream(numeFisier)) {
+            try (FileOutputStream out = new FileOutputStream(filename)) {
                 workbook.write(out);
             }
             catch(IOException e) {
                 e.printStackTrace();
             }
         }
-        }
     }
+}
 
